@@ -8,3 +8,19 @@
 * tomcat
 * hibernate-validator(2.3.x 이상 부터는 사라짐)
 * webmvc
+
+### java 버전 및 스프링 버전 변경
+* maven 기준
+```xml
+...
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.0.3.RELEASE</version>
+    <relativePath/>
+  </parent>
+  <properties>
+      <spring.version>5.0.6.RELEASE</spring.version>
+      <java.version>1.8</java.version>
+  </properties>
+```

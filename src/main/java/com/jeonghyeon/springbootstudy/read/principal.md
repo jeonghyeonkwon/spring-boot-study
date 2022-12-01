@@ -24,3 +24,50 @@
       <java.version>1.8</java.version>
   </properties>
 ```
+
+## 자동 설정 이해
+* @SpringBootApplication은 밑에 3가지를 합친것
+  * SpringBootConfiguration
+  * ComponentScan
+    * @Component가 붙인 애노테이션들을 스캔하는것
+    * 자기 위치부터 하위 패키지까지 스캔  
+    * @Configuration
+    * @Repository
+    * @Service
+    * @Controller
+    * @RestController
+  * EnableAutoConfiguration
+    * spring 메타파일
+      * spring-boot-autoconfigure 프로젝트 밑에 spring.factories
+        * 리스트들 안에는 다 @Configuration이 붙어 있다
+          * @Conditional.... 붙어 있는거는 ~일때 등록한다 안한다로 구분하기 위한 애노테이션
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(SpApplication.class, args);
+  }
+}
+```
+### 웹 애플리케이션말고 만드는 법
+
+```java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@ComponentScan
+public class Application {
+  public static void main(String[] args) {
+    SpringApplication springApplication = new SpringApplication(Application.class);
+    springApplication.setWebApplicationType(WebApplicationType.NONE);
+    springApplication.run(args);
+  }
+}
+```

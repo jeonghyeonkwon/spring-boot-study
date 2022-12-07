@@ -71,3 +71,58 @@ public class Application {
   }
 }
 ```
+
+## 자동 설정 만들기
+* 프로젝트 네이밍
+  * Xxx-Spring-Boot-Autoconfigure 모듈 : 자동 설정
+  * Xxx-Spring-Boot-Starter 모듈 : 필요한 의존성 정의
+
+### 만들기 순서
+1. 프로젝트 생성한다(메이븐 프로젝트)
+2. 의존성 추가
+```xml
+...
+
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-autoconfigure</artifactId>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-autoconfigure-processor</artifactId>
+    <optional>true</optional>
+  </dependency>
+</dependencies>
+<dependencyManagement>
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-dependencies</artifactId>
+    <type>pom</type>
+    <scope>import</scope>
+  </dependency>
+</dependencies>
+</dependencyManagement>
+```
+3. 설정 클래스를 만든다
+
+```java
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class RibConfiguration{
+    
+}
+```
+4. src/main/resource/META-INF에 spring.factories 파일 만들기
+```properties
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  설정 파일 풀경로(com.jeonghyeon...)
+```
+5. mvn install
+   * 로컬 메이븐 저장소에 만들어 진다
+
+* 단점
+  * 다른 프로젝트에서 빈등록을 해도 무시됨
+    * ComponentScan으로 등록하고 AutoConfiguration으로 덮어 쓰기 때문에

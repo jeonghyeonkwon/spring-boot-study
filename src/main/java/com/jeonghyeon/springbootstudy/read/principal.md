@@ -108,11 +108,19 @@ public class Application {
 3. 설정 클래스를 만든다
 
 ```java
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RibConfiguration{
-    
+public class RibConfiguration {
+
+  @Bean
+  public Account account(){
+      Account account = new Account();
+      account.setName("jeonghyeon");
+      account.setAge(25);
+      return account;
+  }
 }
 ```
 4. src/main/resource/META-INF에 spring.factories 파일 만들기
@@ -123,6 +131,98 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 5. mvn install
    * 로컬 메이븐 저장소에 만들어 진다
 
-* 단점
-  * 다른 프로젝트에서 빈등록을 해도 무시됨
+#### 단점
+  * 현재 프로젝트의 빈을 등록해도 외부의 설정으로 빈으로 덮어 씌어 진다 
     * ComponentScan으로 등록하고 AutoConfiguration으로 덮어 쓰기 때문에
+      * 해결책
+        * @ConditionalOnMissingBean
+          * 빈이 없다면 이것을 사용하겠다는 것(덮어쓰기 방지)
+
+```java
+
+
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class RibConfiguration {
+
+  @Bean
+  @ConditionalOnMissingBean
+  public Account account() {
+    Account account = new Account();
+    account.setName("jeonghyeon");
+    account.setAge(25);
+    return account;
+  }
+}
+
+```
+#### 다른 해결법
+  * 나는 의존하는 객체에서 몇개의 값만 바꾸고 싶다
+  
+  * 의존성 추가(외부 의존 프로젝트X)
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-configuration-processor</artifactId>
+  <optional>true</optional>
+</dependency> 
+```
+* application.properties 추가(외부 의존 프로젝트 X)
+```properties
+account.name = jeonghyeon
+account.age = 31
+```
+
+* properties 만들기(외부 의존 프로젝트)
+
+```java
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties("account")
+public class Account {
+  private String name;
+  private int age;
+
+  public String getName() {
+    return name;
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  @Override
+  public String toString() {
+    return "Account{" +
+            "name='" + name + '\'' +
+            ", age=" + age +
+            '}';
+  }
+}
+```
+
+* Configuration 수정(외부 의존 프로젝트)
+
+```java
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableConfigurationProperties(AccountProperties.class)
+public class RibConfiguration {
+
+  @Bean
+  @ConditionalOnMissingBean
+  public Account account(AccountProperteis properties) {
+    Account account = new Account();
+    account.setName(properties.getName);
+    account.setAge(properties.getAge);
+    return account;
+  }
+}
+```

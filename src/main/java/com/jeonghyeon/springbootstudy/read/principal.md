@@ -226,3 +226,47 @@ public class RibConfiguration {
   }
 }
 ```
+
+## 내장 웹 서버 이해
+* 스프링 부트는 웹서버가 아니다
+  * 웹 어플리케이션 아니게 만들 수 있다.
+  * 톰캣, 제티, 언더 토우 등 설정 가능
+* 스프링 부트는 자동 설정되어 있다 밑에 코드처럼
+  * ServletWebServerFactoryAutoConfiguration (서블릿 웹 서버 생성)
+    * TomcatServletWebServerFactoryConfiguration (서블릿 웹 서버 생성)
+  * DispatcherServletAutoConfiguration
+    * 서블릿 만들고 등록
+```java
+import org.apache.catalina.startup.Tomcat;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+public class Application {
+  public static void main(String[] args) {
+    Tomcat tomcat = new Tomcat();
+    tomcat.setPort(8090);
+    Context context = tomcat.addContext("/", "/");
+    HttpServlet servlet = new HttpServlet() {
+      @Override
+      protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter writer = resp.getWriter();
+        writer.println("<html><head><title>");
+        writer.println("Hey Tomcat");
+        writer.println("</title></head>");
+        writer.println("<body><h1>Hello Tomcat</h1></body>");
+        writer.println("</html>");
+      }
+    };
+    String servletName = "helloServley";
+    tomcat.addServlet("/",servletName, servlet);
+    context.addServletMappingDecoded("/hello",servletName);
+    tomcat.start();
+    tomcat.getServer().await();
+  }
+}
+```

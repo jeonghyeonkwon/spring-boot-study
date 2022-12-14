@@ -71,6 +71,11 @@ public class Application {
   }
 }
 ```
+or
+
+```properties
+spring.main.web-application-type=none
+```
 
 ## 자동 설정 만들기
 * 프로젝트 네이밍
@@ -267,6 +272,52 @@ public class Application {
     context.addServletMappingDecoded("/hello",servletName);
     tomcat.start();
     tomcat.getServer().await();
+  }
+}
+```
+## 내장 웹 서버 응용 : 컨테이너와 서버 포트
+* 기본은 tomcat이다
+
+### 다른 서블릿 컨테이너 사용하기
+```xml
+<dependencies>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <exclusions>
+      <exclusion>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-tomcat</artifactId>
+      </exclusion>
+    </exclusions>
+  </dependency>
+  <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-jetty</artifactId>
+  </dependency>
+</dependencies>
+```
+
+### 랜덤 포트 주는법
+```properties
+server.port=0
+```
+
+#### 포트 번호 알기
+
+```java
+
+import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
+import org.springframework.boot.web.servlet.context.ServletWebServerInitializedEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Bean;
+
+@Component
+public class PortListener implements ApplicationListener<ServletWebServerInitializedEvent> {
+  @Override
+  public void onApplicationEvent(ServletWebServerInitializedEvent event) {
+    ServletWebServerApplicationContext applicationContext = event.getApplicationContext();
+    System.out.println(applicationContext.getWebServer().getPort());
   }
 }
 ```

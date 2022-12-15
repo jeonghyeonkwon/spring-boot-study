@@ -7,5 +7,6 @@
 * 자동 설정 만들기
 * 내장 서버 이해
 * 내장 웹 서버 응용 : 컨테이너와 서버 포트
+* Https, Http2 적용
 ## 출처
 * [인프런 - 백기선님 스프링 부트 강좌](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8)

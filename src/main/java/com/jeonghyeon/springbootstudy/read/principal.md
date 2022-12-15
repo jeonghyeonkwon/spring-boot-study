@@ -321,3 +321,48 @@ public class PortListener implements ApplicationListener<ServletWebServerInitial
   }
 }
 ```
+## Https, Http2 적용
+### Https 적용
+1. 프로젝트 새로 만든다.
+2. keystore.sh 만든다
+```shell
+keytool -genkey -alias spring -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validit 4000
+```
+3. 개인 정보를 입력한다
+4. 그러면 keystore.p12가 생성
+5. application.yml 작성
+```yaml
+
+server.ssl.key-store=키스토어_이름
+server.ssl.key-store-type=PKCS12
+server.ssl.key-store-password=설정때_입력한_비밀번호
+server.ssl.key-alias=별칭_이름(여기서는_스프링)
+```
+6. https는 적용되었지만 공인된 인증서가 아니라 경고가 뜸
+   * pub-key를 브라우저가 모름
+7. 이제 http는 안됨
+   * 설정하는 법
+
+```java
+import org.springframework.context.annotation.Bean;
+
+@Bean
+public ServletWebServerFactory serverFactory(){
+    TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
+    tomcat.addAddtionalTomcatConnectors(createStandardConnector());
+    return tomcat;
+}
+private Connector createStandardConnector(){
+    Connector connector = new Connector("org.apach.coyote.http11.Http11NioProtocol");
+    connector.setPort(8080);
+    return connector;
+//    서버 포트 다르게
+}
+```
+
+### Http2 적용
+* 사용하는 서블릿 컨테이너 마다 다름
+* ssl 적용되있어야 됨
+```yaml
+server.http2.enabled=true
+```

@@ -366,3 +366,13 @@ private Connector createStandardConnector(){
 ```yaml
 server.http2.enabled=true
 ```
+
+### 독립적 jar
+* mvn package를 하면 jar파일이 생김
+  * 의존 라이브러리들이 jar파일 안에 다 들어가 있음
+    * target/app/BOOT-INF/lib
+    * 내장 jar파일을 읽어 들이는 파일들이 들어있다
+      * org.springframework.boot.loader.jar.jarFile
+        * jar로더
+      * org.springframework.loader.Launcher
+        * jar파일 실행

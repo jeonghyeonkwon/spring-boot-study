@@ -21,3 +21,93 @@ public class BootApplication {
     }
 }
 ```
+
+### Event Listener 만들기
+
+```java
+import org.springframework.boot.context.event.ApplicationStartingEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
+
+@Component
+public class SimpleListener implements ApplicationListener<ApplicationStartingEvent> {
+    @Override
+    public void onApplicationEvent(ApplicationStartingEvent event) {
+        System.out.println("========================");
+        System.out.println("Application is starting");
+        System.out.println("========================");
+//        이렇게 하면 작동하지않는다
+    }
+}
+```
+* 등록하기(위에 Listener에 @Component 주석)
+
+```java
+import com.jeonghyeon.springbootstudy.SimpleListener;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringInitApplication {
+    public static void main(Sttring[] args) {
+        SpringApplication app = new SpringApplication(SpringInitApplication.class);
+        app.addListeners(new SimpleListener());
+        app.run(args);
+    }
+}
+```
+
+
+* ApplicationListener<ApplicationStartingEvent>
+  * ApplicationContext 만들어지기 이전임
+  * 직접 등록해야됨
+* ApplicationListener<ApplicationStartedEvent>
+  * ApplicationContext 시작 된 이후
+
+### argument option
+
+```java
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.stereotype.Component;
+
+@Component
+public class SampleListener {
+    public SampleListener(ApplicationArguments args) {
+        System.out.println("option : " + args.containsOption("bar"));
+    }
+}
+```
+* VMOption
+  * JVM OPTION 
+  * -Dfoo
+* Program arguments 
+  * --bar
+  * 이게 위 클래스이 argument임
+
+### 애플리케이션이 실행한 뒤 뭔가 실행하고 싶을 떄
+* ApplicationRunner OR CommandLineRunner
+
+```java
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+
+import org.springframework.boot.ApplicationRunner;
+
+@Component
+public class Sample implements ApplicationRunner {
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        ...
+    }
+}
+
+@Component
+public class Sample2 implements CommandLineRunner {
+    @Override
+    public void run(String... args) throws Exception {
+        ...
+    }
+}
+```

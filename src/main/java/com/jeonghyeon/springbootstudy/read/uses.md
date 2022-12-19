@@ -111,3 +111,39 @@ public class Sample2 implements CommandLineRunner {
     }
 }
 ```
+
+
+## 외부 설정
+* application.yml OR application.properties
+* 환경 변수
+* 커맨드 라인 아규먼트
+
+### 우선순위(내가 사용 할 것만 정리)
+1. TestPropertySource
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
+@RunWith(SpringRunner.class)
+// /src/test/resources.test.properties
+@TestPropertySource(locations = "classpath:/test.properties")
+@SpringBootTest
+public class SpringInitApplicationTest {
+  @Autowired
+  Environment env;
+  
+  @Test
+  public void contextLoads(){
+      assertThat(env.getProperty("..."))
+  }
+}
+```
+2. 커맨드 라인 아규먼트
+3. application.yml
+
+### application.yml 우선순위(높은게 밑에것을 덮어씀)
+1. file:./config/
+2. file:./
+3. classpath:/config/
+4. classpath:/

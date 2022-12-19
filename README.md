@@ -7,7 +7,7 @@
 * 내장 웹 서버 응용 : 컨테이너와 서버 포트
 * Https, Http2 적용
 * 독립적 jar
-
+* 외부 설정
 ## 스프링 부트 활용
 * SpringApplication
 ## 출처

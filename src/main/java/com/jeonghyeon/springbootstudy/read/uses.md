@@ -147,3 +147,69 @@ public class SpringInitApplicationTest {
 2. file:./
 3. classpath:/config/
 4. classpath:/
+
+### properties 객체로 쓰기
+* pom.xml 의존성 추가
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-configuration-processor</artifactId>
+  <optional>true</optional>
+</dependency> 
+```
+* application.properties 추가
+```properties
+person.name=jeonghyeon
+person.age=29
+```
+* class 만들기
+
+```java
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
+
+@Component
+@ConfigurationProperties("person")
+@Validated
+public class Human {
+
+    
+  //    검증도 가능
+  @NotEmpty
+  private String notNullStr;
+
+  private String name;
+
+  private String age;
+
+  public String getName() {
+    return name;
+  }
+
+  public String getAge() {
+    return age;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setAge(String age) {
+    this.age = age;
+  }
+}
+```
+* 사용시
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class AController {
+  @Autowired
+  private Human human;
+}
+
+```

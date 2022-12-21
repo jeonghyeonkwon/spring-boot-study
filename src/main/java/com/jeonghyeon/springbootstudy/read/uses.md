@@ -213,3 +213,17 @@ public class AController {
 }
 
 ```
+
+## 프로파일
+* @Configuration, @Component에 사용한다
+* application.properties에 프로파일에 준 이름을 넣는다
+```properties
+spring.profiles.active = prod
+```
+
+* 프로퍼티에서 다른 프로퍼티를 추가 할 수 있다
+```properties
+spring.profiles.include=proddb
+
+#다른 application-proddb.properties 파일의 설정을 추가 한다
+```

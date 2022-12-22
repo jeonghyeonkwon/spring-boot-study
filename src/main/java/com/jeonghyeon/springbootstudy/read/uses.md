@@ -236,7 +236,7 @@ spring.profiles.include=proddb
   * JUL
   * Log4J2
   * Logback
-* 스프링 푸트 의존 관게를 보면 밑에 처럼 되어있다 결국 log4j는 logback을 바라보게 되어있다(기본 설정이) 
+* 스프링 푸트 의존 관게를 보면 밑에 처럼 되어있다 결국 log4j는 logback을 바라보게 되어있다(스프링 부트 기본 설정이...) 
   * jul -> slf4j
   * log4j -> slf4j
 * 스프링 부트 로깅 
@@ -250,3 +250,38 @@ spring.profiles.include=proddb
       * logging.path=
   * 로그 레벨 조정 : logging.level.패키지 = 로그 레벨  
   
+## 커스텀 로그 사용하기
+* Logback
+  * logback-spring.xml
+* Log4J2
+  * log4j2-spring.xml
+* JUL
+  * logging.properties
+
+### logback-spring.xml 커스텀
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <logger name="com.jeonghyeon.springbootstudy" level="DEBUG"/>
+</configuration>
+```
+### Logback 에서 Log4J로 바꾸기
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-web</artifactId>
+  <exclusions>
+    <exclusion>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-logging</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-log4j2</artifactId>
+</dependency>
+```

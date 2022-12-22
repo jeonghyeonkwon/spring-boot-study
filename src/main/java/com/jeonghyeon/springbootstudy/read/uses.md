@@ -227,3 +227,26 @@ spring.profiles.include=proddb
 
 #다른 application-proddb.properties 파일의 설정을 추가 한다
 ```
+
+## 로깅
+* 로깅 퍼사드
+  * 실제 로거는 아니지만 여러 로거를 바꿔 사용할 수 있는 추상화된 인터페이스
+* 로거
+  * slf4j
+  * JUL
+  * Log4J2
+  * Logback
+* 스프링 푸트 의존 관게를 보면 밑에 처럼 되어있다 결국 log4j는 logback을 바라보게 되어있다(기본 설정이) 
+  * jul -> slf4j
+  * log4j -> slf4j
+* 스프링 부트 로깅 
+  * -Ddebug or --debug
+  * --trace(전부 다 디버깅)
+  * 컬러 : spring.output.ansi.enabled
+  * 파일 출력 : logging.file or logging.path
+    * 파일 설정(application.properties)
+      * logging.file=
+    * 디렉토리 설정(application.properties)
+      * logging.path=
+  * 로그 레벨 조정 : logging.level.패키지 = 로그 레벨  
+  

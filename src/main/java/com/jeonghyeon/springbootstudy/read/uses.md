@@ -285,3 +285,83 @@ spring.profiles.include=proddb
     <artifactId>spring-boot-starter-log4j2</artifactId>
 </dependency>
 ```
+
+## 테스트
+* 기본적인 스프링 부트 starter-test을 추가하면 오면 많은것을 사용할 수 있다.
+  * 대표적으로
+    * Junit
+    * Spring-test
+    * Mockito
+
+### 최신 버전에서 MockMvc 만드는 방법
+
+#### 웹 환경 변수가 MOCK 일 때(기본이 MOCK)
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+public class SampleControllerTest{
+  
+  @Autowired
+  MockMvc mockMvc;
+  
+  @Test
+  public void hello() throws Exception{
+      mockMvc.perform(get("/hello"))
+              .andExpect(status().isOk())
+              .andExpect(content().string("return 내용"))
+              .andDo(print());
+  }
+  
+}
+```
+#### 웹 환경 변수가 RANDOM_PORT 일 때
+* 이때는 서블릿이 뜸(내장 톰캣 사용)
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+public class SampleControllerTest{
+  
+  @Autowired
+  TestRestTemplate testRestTemplate;
+  
+  @MockBean
+  SampleService mockSampleService;
+  
+  @Test
+  public void hello() throws Exception{
+      when(mockSampleService.getName()).thenReturn("jeonghyeon");
+      
+      String result = testRestTemplate.getForObject("/", String.class);
+      assetThat(result).isEquals("hello jeonghyeon");
+  }
+//  OR 
+// webflux 의존성 추가하고 WebTestClient 사용하기
+// asynchronus 기반
+  @Autowired
+  WebTestClient webTestClient;
+  
+  @MockBean
+  SampleService mockSampleService;
+
+  @Test
+  public void hello() throws Exception{
+    when(mockSampleService.getName()).thenReturn("jeonghyeon");
+
+    webTestClient.get().uri("/api").exchange()
+            .expectStatus().isOk()
+            .expectBody(String.class).isEqualTo("hello jeonghyeon");
+  }
+}
+```
+### MockBean
+* 통합 슬라이스 테스트 두 쪽다 씀
+### 슬라이스 테스트
+* 위에 것은 통합 테스트
+* 레이어 별로 잘라서 테스트 할 때
+* @JsonTest
+* @WebMvcTest
+* @WebFluxTest
+* @DataJpaTest
+* ...

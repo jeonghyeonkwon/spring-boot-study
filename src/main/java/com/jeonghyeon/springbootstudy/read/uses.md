@@ -365,3 +365,27 @@ public class SampleControllerTest{
 * @WebFluxTest
 * @DataJpaTest
 * ...
+
+### outputcapture
+* 로거 또는 System.out.println으로 다른 컨트롤러가 찍힌 것들을 테스트 할 수 있다.
+```java
+@RunWith(SpringRunner.class)
+@WebMvcTest(SampleController.class)
+public SampleControllerTest{
+    
+    @Rule
+    public OutputCapture outputCapture = new OutputCapture();
+    
+    @Test
+    public void test(){
+        when(mockSampleService.getName()).thenReturn("jeonghyeon");
+
+        webTestClient.get().uri("/api").exchange()
+        .expectStatus().isOk()
+        .expectBody(String.class).isEqualTo("hello jeonghyeon");
+        
+        assertThat(outputCapture.toString).contains("로거 내용");
+    }
+}
+
+```

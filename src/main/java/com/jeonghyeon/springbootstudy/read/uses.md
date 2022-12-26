@@ -389,3 +389,14 @@ public SampleControllerTest{
 }
 
 ```
+## Spring-Boot-Devtools
+* 클래스패스에 있는 파일이 수정되면 바로 재시작
+* 캐시를 다 꺼서 수정된 사항이 바로 볼수 있게 설정됨
+* 의존성 추가 후 mvn build 하면 바뀜
+  * 실패 할 확률도 있음.. 그래서 잘 안씀
+```xml
+<dependenby>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-devtools</artifactId>
+</dependenby>
+```

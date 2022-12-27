@@ -395,10 +395,10 @@ public SampleControllerTest{
 * 의존성 추가 후 mvn build 하면 바뀜
   * 실패 할 확률도 있음.. 그래서 잘 안씀
 ```xml
-<dependenby>
+<dependency>
   <groupId>org.springframework.boot</groupId>
   <artifactId>spring-boot-devtools</artifactId>
-</dependenby>
+</dependency>
 ```
 
 

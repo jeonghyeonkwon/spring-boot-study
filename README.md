@@ -16,5 +16,10 @@
 * 로깅
 * 테스트
 * Spring-Boot-Devtools
+
+## MVC 관련
+* 스프링 부트에서 MVC
+
+
 ## 출처
 * [인프런 - 백기선님 스프링 부트 강좌](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8)

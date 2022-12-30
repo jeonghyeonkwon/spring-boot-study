@@ -52,3 +52,47 @@ public class WebConfig implements WebMvcConfigurer {
 ### 캐싱 기능
 * header 정보에 Last-Modified 정보로 판별하여 새로운 리소스를 반환할지 있는 자원을 활용할지 결정
 
+## 웹 jar
+* 리액트, 앵귤러, 뷰 같은 라이브러리를 jar로 추가해서 사용할 수 있다
+* 이때까지 사용할려면 cdn 또는 static에 다운 받아서 사용 해 왔었음... 새롭게 알게 됨
+### 사용 방법(jquery 예시)
+1. maven 저장소에서 jquery 를 찾아 pom.xml에 추가
+2. html에 jquery 추가 (/webjars/jquery/3.3.1/...)
+```html
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+             <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+             <title>Document</title>
+</head>
+<body>
+
+
+<script src="/webjars/jquery/3.3.1/dist/jquery.min.js"></script>
+</body>
+
+</html>
+```
+3. 버전 바뀔때 마다 3.3.1을 수정해야 되므로 버전을 생략하게 해주는 의존성 추가 하면 됨
+  * webjars-locator-core 추가
+```html
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+             <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+                         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+             <title>Document</title>
+</head>
+<body>
+
+
+<script src="/webjars/jquery/dist/jquery.min.js"></script>
+</body>
+
+</html>
+```

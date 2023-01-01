@@ -96,3 +96,15 @@ public class WebConfig implements WebMvcConfigurer {
 
 </html>
 ```
+
+## ExceptionHandler
+### MVC에서 에러 처리하는 방법
+* @ControllerAdvice
+  * 한 컨트롤러 내부에서 처리하는 것이 아닌 전체 혹은 설정한 패키지 단위로 Exception을 처리 할 용도로 사용
+* @ExceptionHander
+  * 어떤 예외가 발생 했을 때 어떤 응답 값을 반환 할 지 정하는 곳
+  * Exception 내용을 파라미터로 받는다
+
+### 스프링 부트가 제공하는 에러 페이지
+* BasicErrorController
+  * HTML, JSON 형식으로 반환

@@ -135,3 +135,40 @@ public class SampleController {
   }
 }
 ```
+
+
+## CORS(Cross Origin Resource Sharing)
+### SOP(Same Origin Policy)
+* 프로토콜, 도메인, 포트번호가 모두 일치해야 되는 정책
+  * 즉 하나라도 다르면 요청을 금지한다
+
+* 즉! 이러한 SOP 정책을 풀어주는 것
+
+### 설정하는 법
+1. 컨트롤러 설정
+
+```java
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@CrossOrigin(origins = "http://localhost:8090")
+@GetMapping("/hello")
+public String hello(){
+    return "Hello";
+}
+```
+2. WebConfig 글로벌 설정
+```java
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+            .allowedOrigins("http://localhost:8090");
+  }
+}
+```

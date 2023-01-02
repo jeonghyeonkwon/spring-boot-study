@@ -108,3 +108,30 @@ public class WebConfig implements WebMvcConfigurer {
 ### 스프링 부트가 제공하는 에러 페이지
 * BasicErrorController
   * HTML, JSON 형식으로 반환
+
+## Spring HATEOAS
+* 현재 RestApi에서 연관된 다른 페이지로 이동할 링크를 넣어서 반환 하는 것
+  * 현재 호출 api는 게시판 리스트다. 그럼 디테일 페이지 링크, 페이지네이션 링크 정보도 넣어서 반환 
+  * 강의 내용을 내 방식대로 이해한 것...
+
+```java
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class SampleController {
+  @GetMapping("/hello")
+  public Hello hello(){
+      Hello hello = new Hello();
+      hello.setPrefix("Hey,");
+      hello.setName("Keesun");
+      
+      Resource<Hello> helloResource = new Resource<>(hello);
+      
+      helloResource.add(linkTo(methodOn(SampleController.class).hello()).withSelfRel());
+      
+      return helloResource;
+  }
+}
+```

@@ -172,3 +172,57 @@ public class WebConfig implements WebMvcConfigurer {
   }
 }
 ```
+
+## 스프링 데이터
+
+### 인메모리 데이터베이스
+* 지원하는 인-메모리 데이터베이스
+  * H2
+  * HSQL
+  * Derby
+
+* spring-starter-jdbc를 의존성 등록해주면 2가지가 들어온다
+  * HikariCP
+  * spring-jdbc
+    * 이 클래스패스가 있으면 자동으로 빈 설정을 해줌
+    * DataSource
+    * JdbcTemplate
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
+
+import javax.sql.DataSource;
+import java.sql.Statement;
+
+@Component
+public class H2Runner implements ApplicationRunner {
+  @Autowired
+  DataSource dataSource;
+
+  @Autowired
+  JdbcTemplate jdbcTemplate;
+  
+  @Override
+  public void run(ApplicationArguments args) throws Exception {
+    Connection connection = dataSource.getConnection();
+    connection.getMetaData().getURL();
+    connection.getMetaData().getUserName();
+
+    Statement statement = connection.createStatement();
+    String sql = "CREATE TABLE ...";
+    
+    statement.executeUpdate(sql);// JPA 자동으로 테이블 생성하는게 이런 구조 같음
+    //try catch ,transaction,... 여러가지를 해야한다
+    connection.close();
+    
+    
+    // JDBC Template도 가능
+    
+  }
+}
+```
+* 인메모리 db 기본 연결 정보는 EmbeddedDataSourceConfiguration에서 확인 가능하다
+  * URL, username, password 설정 관련

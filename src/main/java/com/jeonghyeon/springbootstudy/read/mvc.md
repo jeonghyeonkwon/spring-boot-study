@@ -226,3 +226,29 @@ public class H2Runner implements ApplicationRunner {
 ```
 * 인메모리 db 기본 연결 정보는 EmbeddedDataSourceConfiguration에서 확인 가능하다
   * URL, username, password 설정 관련
+
+### MYSQL
+* 유료이므로 1년마다 라이센스를 사야되고 소스코드 공개 의무도 있다.(GPL 라이센스)
+* mariaDB도 소스코드 공개 의무가 있다
+#### DBCP
+* Database Connection Pool
+* 위 코드의 dataSource.getConnection() 에서 많은 일들이 일어난다
+  * 미리 만들어 놓고 쓰는 개념
+    * 몇 개를 만들어 놓을 것인가
+    * 얼마동안 안쓰면 최소한 몇개를 제거할 것인가
+    * 서버에 얼마동안 전달 못하면 에러를 던질 것인가?
+    * ...
+  * 성능에 핵심적인 기능
+
+#### HikariCP
+* 스프링 부트의 기본적인 CP
+* autoCommit (기본 true)
+  * 커밋이라고 적지 않아도 자동으로 커밋하는 설정
+* connectionTimeout (기본 30초)
+* maximumPoolSize (기본 10개)
+  * 기본은 10개이지만 cpu 코어갯수가 넘어가면 대기이다
+
+#### HikariCP application.yml에서 설정 가능
+```yaml
+spring.datasource.hikari.*
+```

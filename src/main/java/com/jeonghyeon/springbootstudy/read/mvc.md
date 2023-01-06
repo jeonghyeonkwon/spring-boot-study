@@ -252,3 +252,7 @@ public class H2Runner implements ApplicationRunner {
 ```yaml
 spring.datasource.hikari.*
 ```
+
+## 스프링 데이터 JPA 
+* JPA는 하이버네이트 기술에 기반하여 만들어 졌다
+  * Spring Data JPA -> JPA -> Hibernate -> DataSource

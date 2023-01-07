@@ -256,3 +256,64 @@ spring.datasource.hikari.*
 ## 스프링 데이터 JPA 
 * JPA는 하이버네이트 기술에 기반하여 만들어 졌다
   * Spring Data JPA -> JPA -> Hibernate -> DataSource
+
+### JPA 슬라이싱 테스트
+* Repository와 관련된 빈만 테스트 하는 것
+  * 인메모리 DB가 의존성에 있어야 한다
+```xml
+
+...
+
+<dependency>
+  <groupId>com.h2database</groupId>
+  <artifactId>h2</artifactId>
+  <scope>test</scope>
+</dependency>
+```
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+@RunWith(SpringRunner.class)
+@DataJpaTest
+public class AccountRepositoryTest {
+
+  @Autowired
+  DataSource dataSource;
+
+  @Autowired
+  JdbcTemplate jdbcTemplate;
+  
+  @Autowired
+  AccountRepository accountRepository;
+  
+  // 위에 3개 빈으로 등록할 수 있다
+}
+
+
+```
+
+### 통합 테스트
+* 스프링 부트에 있는 모든 빈들이 등록된다
+  * 이때는 인 메모리DB가 아니다. 그래서 test 디렉토리 안에 테스트 용 db 정보가 담긴 application.yml 파일을 따로 만든다
+
+```java
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(properties = "spring.datasource.url='...'")
+public class AccountRepositoryTest {
+
+  @Autowired
+  DataSource dataSource;
+
+  @Autowired
+  JdbcTemplate jdbcTemplate;
+  
+  @Autowired
+  AccountRepository accountRepository;
+  
+
+}
+
+```

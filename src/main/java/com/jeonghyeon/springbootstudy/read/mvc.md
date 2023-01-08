@@ -317,3 +317,26 @@ public class AccountRepositoryTest {
 }
 
 ```
+
+### 운영용 DB 설정
+
+```properties
+# 테스트 환경설정에는 꺼주자
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.generate-ddl=false
+```
+
+### SQL 스크립트로 사용한 데이터베이스 초기화
+* ddl-auto=update 시 기존 컬럼명을 변경하면 지우지 않고 그대로 나두고 새로운 컬럼을 생성함
+  * 처음 개발 동안 email로 만들다가 userEmail로 변경하면 email이라는 컬럼은 나두고 userEmail이라는 컬럼이 생성됨
+
+#### 적용 순서
+* 밑에 platform은 application.properties에서 spring.datasource.platform으로 설정 가능
+
+1. schema.sql or schema-${platform}.sql
+2. data.sql or data-${platform}.sql
+
+#### 개발시 참고
+1. 처음 개발 동안은 ddl-auto=update로 두고
+2. 테스트 디렉토리에서 schema.sql로 쿼리들을 정리 및 테스트 후
+3. schema.sql를 복사해서 resouce에 넣는다

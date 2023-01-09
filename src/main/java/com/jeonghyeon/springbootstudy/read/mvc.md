@@ -353,3 +353,57 @@ spring.jpa.generate-ddl=false
    * V숫자__이름.sql
      * 대문자여야 하고 숫자는 순차적 언더바 2개 이름은 서술적
 4. 그러면 flyway관련 테이블이 생성된거 확인 가능 
+
+### redis
+* [redis 기본 문법](https://github.com/jeonghyeonkwon/backend-material-collection/tree/main/redis)
+#### 의존성 추가
+* spring-boot-starter-data-redis
+#### 사용하는 방법
+* StringRedisTemplate or RedisTemplate
+* extends CrudRepository
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class RedisRunner implements ApplicationRunner {
+  @Autowired
+  StringRedisTemplate redisTemplate;
+  
+  @Override
+  public void run(ApplicationArguments args) throws Exception{
+      ValueOperations<String, String> values = redisTemplate.opsForValue();
+      values.set("hello", "world");
+  }
+}
+```
+
+* repository 만들기
+```java
+@RedisHash("accounts")
+@Getter
+@Setter
+public class Account{
+//  이렇게 하면 keys를 찍으면 accounts:해시코드로 뜸
+//  "get accounts:해시코드 필드"가 아니라 "hget accounts:해시코드 필드" or "hgetall accounts:해시코드"로 찍어야됨 
+  @Id
+  private String id;
+  
+  private String username;
+  
+  private String email;
+  
+}
+
+
+public interface AccountRepository extends CrudRepository<Account, String>{
+    
+}
+```
+
+#### reids 커스터 마이징
+```properties
+spring.redis.* = ...
+```

@@ -339,4 +339,17 @@ spring.jpa.generate-ddl=false
 #### 개발시 참고
 1. 처음 개발 동안은 ddl-auto=update로 두고
 2. 테스트 디렉토리에서 schema.sql로 쿼리들을 정리 및 테스트 후
-3. schema.sql를 복사해서 resouce에 넣는다
+3. schema.sql를 복사해서 resource에 넣는다
+
+### 데이터베이스 마이그레이션
+* Flyway와 Liquibase가 대표적
+  * DB 스키마 변경, 데이터 변경도 버전관리 할 수 있는 툴
+
+#### 조작법
+1. 의존성 추가(flyway 관련 자료 찾아보기)
+2. db/migration or db/migration/{vender} 디렉토리 생성
+   * spring.flyway.locations로 경로 변경 가능
+3. sql파일 생성
+   * V숫자__이름.sql
+     * 대문자여야 하고 숫자는 순차적 언더바 2개 이름은 서술적
+4. 그러면 flyway관련 테이블이 생성된거 확인 가능 

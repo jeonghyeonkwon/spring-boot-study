@@ -22,6 +22,8 @@ public class BootApplication {
 }
 ```
 
+
+
 ### Event Listener 만들기
 
 ```java
@@ -90,6 +92,7 @@ public class SampleListener {
 ```java
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 
@@ -97,22 +100,42 @@ import org.springframework.boot.ApplicationRunner;
 
 @Component
 public class Sample implements ApplicationRunner {
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+  @Override
+  public void run(ApplicationArguments args) throws Exception {
         ...
-    }
+  }
 }
 
+//===============================================
 @Component
 public class Sample2 implements CommandLineRunner {
-    @Override
-    public void run(String... args) throws Exception {
+  @Override
+  public void run(String... args) throws Exception {
         ...
-    }
+  }
 }
 ```
 
+```java
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
+@SpringBootApplication
+public class SpringbootApplication {
+  public static void main(String[] args) {
+    SpringApplication.run(SpringbootApplication.class, args);
+  }
+
+  @Bean
+  public ApplicationRunner applicationRunner(){
+      return args -> {
+          
+      }
+  }
+}
+```
 ## 외부 설정
 * application.yml OR application.properties
 * 환경 변수

@@ -407,3 +407,93 @@ public interface AccountRepository extends CrudRepository<Account, String>{
 ```properties
 spring.redis.* = ...
 ```
+
+### MongoDB
+* 의존성 추가
+  * spring-boot-starter-data-mongodb
+
+#### sql에서 테이블은 mongodb에서는 document
+
+```java
+@Document(collection = "accounts")
+@Getter
+@Setter
+public class Account {
+    
+    @Id
+    private String id;
+    
+    private String username;
+    
+    private String email;
+    
+}
+```
+
+#### 스프링 데이터 mongodb
+* MongoTemplate
+* MongoRepository
+
+```java
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public interface AccountRepository extends MongoRepository<Account, String> {
+
+}
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+@SpringBootApplication
+public class SpringbootApplication {
+
+  @Autowired
+  MongoTemplate mongoTemplate;
+
+  @Autowired
+  MongoRepository mongoRepository;
+  
+  public static void main(String[] args) {
+    SpringApplication.run(SpringbootApplication.class, args);
+  }
+
+
+  @Bean
+  public ApplicationRunner applicationRunner() {
+    return args -> {
+      Account account = new Account();
+      account.setEmail("aaa@bbb");
+      account.setUsername("aaa");
+
+      mongoTemplate.insert(account);
+
+    }
+  }
+}
+```
+
+#### 몽고 디비 테스트 (내장형)
+* 슬라이싱 테스트 가능
+```xml
+<dependency>
+  <groupId>de.flapdoodle.embed</groupId>
+  <artifactId>de.flapdoodle.embed.mongo</artifactId>
+  <scope>test</scope>
+</dependency>
+
+```
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+
+@RunWith(SpringRunner.class)
+@DataMongoTest
+public class AccountRepositoryTest {
+
+  @Autowired
+  AccountRepository accountRepository;
+  
+  @Test
+          ...
+}
+```

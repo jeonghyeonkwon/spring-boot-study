@@ -497,3 +497,81 @@ public class AccountRepositoryTest {
           ...
 }
 ```
+
+### Neo4J
+* 그래프 데이터 베이스
+
+#### 의존성 추가
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-data-neo4j</artifactId>
+</dependency>
+```
+
+#### 사용법
+
+```java
+import java.util.HashSet;
+
+@NodeEntity
+@Getter
+@Setter
+public class Role {
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  private String name;
+}
+
+
+@NodeEntity
+@Getter
+@Setter
+public class Account {
+  @Id
+  @GeneratedValue
+  private Long id;
+
+  private String username;
+
+  private String email;
+
+  @Relationship(type = "has")
+  private Set<Role> roles = new HashSet<>();
+}
+
+import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.boot.ApplicationArguments;
+        import org.springframework.stereotype.Component;
+
+@Component
+public class Neo4jRunner implements ApplicationRunner {
+  @Autowired
+  SessionFactory sessionFactory;
+
+  @Override
+  public void run(ApplicationArguments args) throws Exception {
+    Account account = new Account();
+    account.setUsername("jeonghyeon");
+    account.setEmail("이메일");
+    
+    Role role = new Role();
+    role.setName("admin");
+    
+    account.getRoles.add(role);
+    
+    
+    Session session = sessionFactory.openSession();
+    session.save(account);
+    sessionFactory.close();
+  }
+}
+```
+
+```java
+public interface AccountRepository extends Neo4jRepository<Account, Long>{
+    
+}
+```

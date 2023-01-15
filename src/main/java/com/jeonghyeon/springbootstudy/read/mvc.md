@@ -575,3 +575,13 @@ public interface AccountRepository extends Neo4jRepository<Account, Long>{
     
 }
 ```
+
+
+## RestTemplate와 WebClient
+* [예제-깃허브](https://github.com/jeonghyeonkwon/blog-example-project/blob/main/src/main/java/com/example/blogproject/aboutapi/controller/ApiCallController.java)
+### RestTemplate
+* Blocking 기반의 SynchronousAPI
+* spring-web 모듈이 있다면 RestTemplateBuilder를 빈으로 등록해줌
+### WebClient
+* Non-Blocking 기반의 SynchronousAPI
+* spring-webflux 모듈이 있다면 WebClientBuilder를 빈으로 등록해줌

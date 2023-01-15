@@ -582,6 +582,12 @@ public interface AccountRepository extends Neo4jRepository<Account, Long>{
 ### RestTemplate
 * Blocking 기반의 SynchronousAPI
 * spring-web 모듈이 있다면 RestTemplateBuilder를 빈으로 등록해줌
+* 글로벌 설정 RestTemplateCostomizer 을 이용해서 하면 됨
 ### WebClient
 * Non-Blocking 기반의 SynchronousAPI
 * spring-webflux 모듈이 있다면 WebClientBuilder를 빈으로 등록해줌
+* 글로벌 설정 WebClientCostomizer 을 이용해서 하면 됨
+
+### FeignClient
+* Netflix가 개발한 HttpClient
+* [문서](https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/)

@@ -13,3 +13,20 @@
 </dependency>
 
 ```
+
+
+### JConsole
+* 터미널에 Jconsole을 입력하면 프로젝트들의 메모리, CPU 사용량 등을 볼 수 있다.
+* 하지만 보는것이 불편하다.
+
+### VisualVM
+* JAVA 10 부터는 jvm에 포함 되지 않아 따로 설치해야 된다.
+* Jconsole보다 보기 편하다
+
+### 웹으로 보기
+* 웹으로 보고싶으면 application.yml에 추가
+```properties
+management.endpoints.web.exposure.include=*
+```
+
+* 모두 노출하면 보안상 위험하므로 spring-security 적용해서 보기

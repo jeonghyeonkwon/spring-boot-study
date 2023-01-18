@@ -30,3 +30,41 @@ management.endpoints.web.exposure.include=*
 ```
 
 * 모두 노출하면 보안상 위험하므로 spring-security 적용해서 보기
+
+### Spring-Boot-Admin
+* 위에 것 처럼 웹에서 UI 제공
+* 스프링 부트에서 제공하는 것이 아닌 오픈소스 프로젝트
+* 두개의 서버가 있어야됨
+
+* 어드민 서버
+```xml
+<dependency>
+  <groupId>de.codecentric</groupId>
+  <artifactId>spring-boot-admin-starter-server</artifactId>
+</dependency> 
+```
+
+```java
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@EnabledAdminServer
+public class AdminApplication{
+    public static void main(String[] args){
+      ...
+    }
+}
+```
+
+* 클라이언트 서버
+```xml
+<dependency>
+  <groupId>de.codecentric</groupId>
+  <artifactId>spring-boot-admin-starter-client</artifactId>
+</dependency>
+```
+
+```properties
+spring.boot.admin.client.url=http://localhost:8080
+management.endpoints.web.exposure.include=*
+```
